@@ -52,7 +52,7 @@ class PhoneController extends Controller
             return preg_match("/(^|\s)$searchWord/", $phone->name);
         })->map(function ($phone) {
             return json_decode($phone->fonodata);
-        });
+        })->values();
     }
 
     private function cachedData($name)
