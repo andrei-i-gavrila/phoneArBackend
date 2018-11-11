@@ -94,7 +94,7 @@ class PhoneController extends Controller
         if (preg_match('/js-product-data.*?img src="(.*?)"/sm', $result, $links)){
             return $links[1];
         }
-        return "https://www.gsmarena.com/lg_nexus_5-pictures-5705.php";
+        return "https://cdn2.gsmarena.com/vv/bigpic/lg-google-nexus-5-.jpg";
     }
 
 
