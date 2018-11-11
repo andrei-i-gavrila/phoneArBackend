@@ -18,8 +18,7 @@ class PhoneController extends Controller
         try {
             $data = $fonoApi->getDevice($name);
             $dbLikeData = $this->cacheFonoData($data);
-            $filterStartsWith = $this->filterStartsWith($dbLikeData, $name);
-            return $filterStartsWith;
+            return $this->filterStartsWith($dbLikeData, $name);
         } catch (\Exception $e) {
             return $this->cachedData($name);
         }
@@ -52,11 +51,7 @@ class PhoneController extends Controller
         return $dbLikeData->filter(function ($phone) use ($searchWord) {
             return preg_match("/(^|\s)$searchWord/", $phone->name);
         })->map(function ($phone) {
-            $json = json_decode($phone->fonodata);
-            if ($json === null) {
-                dd($phone, json_last_error_msg(), json_last_error(), $phone->fonodata);
-            }
-            return $json;
+            return json_decode($phone->fonodata);
         });
     }
 
@@ -96,8 +91,10 @@ class PhoneController extends Controller
         $result = curl_exec($ch);
         curl_close($ch);
 
-        preg_match('/js-product-data.*?img src="(.*?)"/sm', $result, $links);
-        return $links[1];
+        if (preg_match('/js-product-data.*?img src="(.*?)"/sm', $result, $links)){
+            return $links[1];
+        }
+        return "https://www.gsmarena.com/lg_nexus_5-pictures-5705.php";
     }
 
 
